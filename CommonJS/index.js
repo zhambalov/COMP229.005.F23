@@ -1,3 +1,3 @@
-let hello = require('./hello');
+let hello = require('./hello.js');
 
 hello();
