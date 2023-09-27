@@ -1,37 +1,91 @@
-// Node
-// const http = require('http');
+#!/usr/bin/env node
 
-// http.createServer((req, res) => {
+/**
+ * Module dependencies.
+ */
 
-//    res.writeHead(200, {
-//     'Content-Type': 'text/plain'
-//    });
+var app = require('./config/app');
+var debug = require('debug')('comp229006:server');
+var http = require('http');
 
-//    res.end('Hello World!');
+/**
+ * Get port from environment and store in Express.
+ */
 
-// }).listen(3000);
+var port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
 
-const express = require('express');
-const app = express();
-app.listen(3000);
+/**
+ * Create HTTP server.
+ */
 
-function logger(req, res, next){
-    console.log(req.method, req.url);
-    next();
+var server = http.createServer(app);
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
 }
 
-function helloWorld(req, res, next) {
-    res.send('Hello World!');
-};
+/**
+ * Event listener for HTTP server "error" event.
+ */
 
-function goodbye(req, res, next) {
-    res.send('Good bye!');
-};
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
 
-// Routes
-app.use(logger);
-app.use('/hello', helloWorld);
-app.use('/goodbye', goodbye);
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
 
-console.log('Server running at http://localhost:3000/');
-module.exports = app;
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+    console.log(`Example app listening on port ${port}`)
+  debug('Listening on ' + bind);
+}
