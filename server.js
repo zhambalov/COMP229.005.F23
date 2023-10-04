@@ -5,7 +5,7 @@
  */
 
 var configDB = require('./config/db');
-var app = require('./config/app');
+var app = require('./config/express');
 var debug = require('debug')('comp229006:server');
 var http = require('http');
 
@@ -13,14 +13,13 @@ var http = require('http');
  * Get port from environment and store in Express.
  */
 
-var db = configDB();
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 /**
  * Create HTTP server.
  */
-
+var db = configDB();
 var server = http.createServer(app);
 
 /**
@@ -88,6 +87,7 @@ function onListening() {
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
-    console.log(`Example app listening on port ${port}`)
+
+  console.log('==== The app is running on http://localhost:' + port );
   debug('Listening on ' + bind);
 }

@@ -1,2 +1,2 @@
-# COMP229.006.F23
- COMP229 Code Example
+# COMP229.005.F23
+ COMP229 Class Examples
